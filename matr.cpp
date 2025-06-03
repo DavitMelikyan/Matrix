@@ -1,7 +1,7 @@
 #include "matrix.h"
 
 void Matrix::set(size_t row, size_t col, double value) {
- 	if (row > rows_ || col > cols_) {
+ 	if (row > rows_ - 1 || col > cols_  - 1) {
                 std::cout << "Invalid position in matrix\n";
                 exit(-1);
         }
