@@ -6,6 +6,10 @@ class Matrix {
 public:	
 	Matrix();
 	Matrix(size_t rows, size_t cols);
+	Matrix(Matrix& other);
+	Matrix(Matrix&& other);
+	Matrix& operator=(Matrix& other);
+	Matrix& operator=(Matrix&& other);
 	void set(size_t row, size_t col, double value);
 	double get(size_t row, size_t col) const;
 	size_t getRows() const;

@@ -1,18 +1,58 @@
 #include "matrix.h"
 
-Matrix::Matrix() {
-        rows_ = 0;
-	cols_ = 0;
-        data_ = nullptr;
-}
+Matrix::Matrix() : rows_{0}, cols_{0}, data_{nullptr} {}
 
-Matrix::Matrix(size_t rows, size_t cols) {
-        rows_ = rows;
-       	cols_ = cols;
-        data_ = new double*[rows_];
+Matrix::Matrix(size_t rows, size_t cols) : rows_{rows}, cols_{cols}, data_{new double*[rows_]} {
         for (int i = 0; i < rows_; ++i) {
       	        data_[i] = new double[cols_];
         }
+}
+
+Matrix::Matrix(Matrix& other) : rows_{other.rows_}, cols_{other.cols_}, data_{new double*[rows_]} {
+	for (int i = 0; i < rows_; ++i) {
+		data_[i] = other.data_[i];
+	}
+}
+
+Matrix::Matrix(Matrix&& other) : rows_{other.rows_}, cols_{other.cols_}, data_{other.data_} {
+	other.rows_ = 0;
+	other.cols_ = 0;
+	other.data_ = nullptr;
+}	
+
+Matrix& Matrix::operator=(Matrix& other) {
+	if (this == &other) {
+		return *this;
+	}
+	for (int i = 0; i < rows_; ++i) {
+                delete [] data_[i];
+        }
+	delete [] data_;
+	rows_ = other.rows_;
+	cols_ = other.cols_;
+	data_ = new double*[rows_];
+        for (int i = 0; i < rows_; ++i) {
+ 		data_[i] = new double[cols_];
+	       	data_[i] = other.data_[i];
+        }
+	return *this;
+}
+
+Matrix& Matrix::operator=(Matrix&& other) {
+	if (this == &other) {
+                return *this;
+        }
+	for (int i = 0; i < rows_; ++i) {
+                delete [] data_[i];
+        }
+        delete [] data_;
+	rows_ = other.rows_;
+        cols_ = other.cols_;
+	data_ = other.data_;
+	other.rows_ = 0;
+        other.cols_ = 0;
+        other.data_ = nullptr;
+	return *this;
 }
 
 Matrix::~Matrix() {
